@@ -1,0 +1,36 @@
+@ControllerAdvice
+public class ExecutionServiceExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExecutionServiceExceptionHandler.class);
+
+    private final GetObjectResponseEntity getObjectResponseEntity = new GetObjectResponseEntity();
+
+    /**
+     * Handle ClassNotFoundException.
+     *
+     * @param ex ItemNotFoundException
+     * @param request WebRequest
+     * @return the ResponseEntity<> object
+     */
+    @ExceptionHandler(ItemNotFoundException.class)
+    public final ResponseEntity<?> handleItemNotFoundExceptions(ItemNotFoundException ex, WebRequest request) {
+        return this.createErrorResponse(ResponseStatusCodeEnum.RESOURCE_NOT_FOUND.getMessage());
+    }
+
+    /**
+     * Handle UnexpectedItemVersionException.
+     *
+     * @param ex ItemNotFoundException
+     * @param request WebRequest
+     * @return the ResponseEntity<> object
+     */
+    @ExceptionHandler(UnexpectedItemVersionException.class)
+    public final ResponseEntity<?> handleUnexpectedItemVersionExceptions(UnexpectedItemVersionException ex, WebRequest request) {
+        return this.createErrorResponse(ResponseStatusCodeEnum.PRECONDITION_FAILED.getMessage());
+    }
+
+
+    private ResponseEntity<Object> createErrorResponse(String message) {
+        return getObjectResponseEntity.getObjectResponseEntity(ResponseStatusCodeEnum.RESOURCE_NOT_FOUND, HttpStatus.BAD_REQUEST, message);
+    }
+}
