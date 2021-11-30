@@ -1,0 +1,12 @@
+public class GetObjectResponseEntity {
+
+    public ResponseEntity<Object> getObjectResponseEntity(ResponseStatusCodeEnum response,
+                                                          HttpStatus status, String message) {
+        ResponseStatus responseStatus = new ResponseStatus(response.getCode(), response.getMessage());
+        GeneralResponse<Object> responseObject = new GeneralResponse<>();
+        responseObject.setData(message);
+        responseObject.setStatus(responseStatus);
+        responseObject.setTimestamp(new Date());
+        return new ResponseEntity<>(responseObject, status);
+    }
+}
